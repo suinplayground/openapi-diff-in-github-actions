@@ -1,4 +1,7 @@
 {
   "name": "openapi-diff-in-github-actions",
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "devDependencies": {
+    "openapi-diff": "^0.23.5"
+  }
 }
