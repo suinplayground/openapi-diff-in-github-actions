@@ -20,10 +20,13 @@ jobs:
           path: new
       - name: Run OpenAPI Diff (from HEAD rev)
         id: openapi-diff
+        continue-on-error: true
         uses: docker://openapitools/openapi-diff:latest
         with:
-          args: --fail-on-incompatible --markdown diff.md --json diff.json old/spec.yaml new/spec.yaml
-        continue-on-error: true
+          args: --fail-on-incompatible --markdown diff.md old/spec.yaml new/spec.yaml
+      - if: steps.openapi-diff.outcome != 'success'
+        run: echo "🚨 BREAKING CHANGES DETECTED\n\n$(cat diff.md)" > diff.md
+      - run: cat diff.md
       - name: create string
         run: |
           MY_STRING=$(cat diff.md)
@@ -33,8 +36,8 @@ jobs:
           echo "::set-output name=content::$MY_STRING"
         id: diff
       - uses: marocchino/sticky-pull-request-comment@v2
-        if: steps.openapi-diff.outcome != 'success'
         with:
           recreate: true
-          message: |
-            ${{ steps.diff.outputs.content }}
+          path: diff.md
+#          message: |
+#            ${{ steps.diff.outputs.content }}
