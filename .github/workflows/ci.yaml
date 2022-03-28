@@ -19,8 +19,14 @@ jobs:
           ref: ${{ github.head_ref }}
           path: new
       - name: Run OpenAPI Diff (from HEAD rev)
+        id: openapi-diff
         uses: docker://openapitools/openapi-diff:latest
         with:
-          args: --markdown diff.md --json diff.json old/spec.yaml new/spec.yaml
+          args: --fail-on-incompatible --markdown diff.md --json diff.json old/spec.yaml new/spec.yaml
+        continue-on-error: true
       - run: cat diff.md
       - run: cat diff.json
+      - run: echo ${{ steps.openapi-diff.outcome }}
+      - name: Check on failures
+        if: steps.openapi-diff.outcome != "success"
+        run: exit 1
