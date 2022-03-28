@@ -21,4 +21,4 @@ jobs:
       - name: Run OpenAPI Diff (from HEAD rev)
         uses: docker://openapitools/openapi-diff:latest
         with:
-          args: --markdown --markdown /github/workspace/diff.md /github/workspace/head/schemas/spec.yaml /github/workspace/base/schemas/spec.yaml
+          args: --markdown /github/workspace/diff.md /github/workspace/head/schemas/spec.yaml /github/workspace/base/schemas/spec.yaml
