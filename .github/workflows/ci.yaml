@@ -29,7 +29,7 @@ jobs:
             echo "## API Changelog"
             echo ""
             [ "${{ steps.openapi-diff.outcome }}" != "success" ] \
-              && echo "<h2 align=center>🚨 API BREAKING CHANGES DETECTED 🚨</h2>"
+              && echo "<h3 align=center><pre>🚨 API BREAKING CHANGES DETECTED 🚨</pre></h3>"
             echo ""
             cat diff.md
           } > comment.md
@@ -38,5 +38,3 @@ jobs:
         with:
           recreate: true
           path: comment.md
-#          message: |
-#            ${{ steps.diff.outputs.content }}
