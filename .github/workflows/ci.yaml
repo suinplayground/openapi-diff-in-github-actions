@@ -24,7 +24,8 @@ jobs:
         uses: docker://openapitools/openapi-diff:latest
         with:
           args: --fail-on-incompatible --markdown diff.md old/spec.yaml new/spec.yaml
-      - run: |
+      - name: Create comment content
+        run: |
           {
             echo "## API Changelog"
             echo ""
@@ -33,8 +34,9 @@ jobs:
             echo ""
             cat diff.md
           } > comment.md
-      - run: cat comment.md
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           recreate: true
           path: comment.md
+      - if: steps.openapi-diff.outcome != "success"
+        run: exit 1
