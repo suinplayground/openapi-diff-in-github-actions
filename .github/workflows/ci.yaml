@@ -24,9 +24,10 @@ jobs:
         uses: docker://openapitools/openapi-diff:latest
         with:
           args: --fail-on-incompatible --markdown diff.md old/spec.yaml new/spec.yaml
+      - run: ls -la diff.md
       - if: steps.openapi-diff.outcome != 'success'
-        run: echo "🚨 BREAKING CHANGES DETECTED\n\n$(cat diff.md)" > diff.md
-      - run: cat diff.md
+        run: echo "🚨 BREAKING CHANGES DETECTED\n\n$(cat diff.md)" > diff2.md
+      - run: cat diff2.md
       - name: create string
         run: |
           MY_STRING=$(cat diff.md)
@@ -38,6 +39,6 @@ jobs:
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           recreate: true
-          path: diff.md
+          path: diff2.md
 #          message: |
 #            ${{ steps.diff.outputs.content }}
