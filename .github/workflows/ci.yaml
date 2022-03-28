@@ -28,5 +28,5 @@ jobs:
       - run: cat diff.json
       - run: echo ${{ steps.openapi-diff.outcome }}
       - name: Check on failures
-        if: steps.openapi-diff.outcome != "success"
+        if: steps.openapi-diff.outcome != 'success'
         run: exit 1
