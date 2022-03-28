@@ -23,6 +23,7 @@ jobs:
         continue-on-error: true
         uses: docker://openapitools/openapi-diff:latest
         with:
+          user: runner
           args: --fail-on-incompatible --markdown diff.md old/spec.yaml new/spec.yaml
       - run: ls -la diff.md
       - run: whoami
