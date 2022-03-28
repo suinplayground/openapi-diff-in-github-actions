@@ -28,23 +28,3 @@ paths:
                 required:
                   - id
                 type: object
-  /users/{userId}:
-    get:
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: The user
-          content:
-            application/json:
-              schema:
-                properties:
-                  name:
-                    type: string
-                required:
-                  - name
-                type: object
