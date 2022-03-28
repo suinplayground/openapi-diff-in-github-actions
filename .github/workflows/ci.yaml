@@ -38,5 +38,5 @@ jobs:
         with:
           recreate: true
           path: comment.md
-      - if: steps.openapi-diff.outcome != "success"
+      - if: steps.openapi-diff.outcome != 'success'
         run: exit 1
