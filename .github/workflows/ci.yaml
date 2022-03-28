@@ -21,4 +21,6 @@ jobs:
       - name: Run OpenAPI Diff (from HEAD rev)
         uses: docker://openapitools/openapi-diff:latest
         with:
-          args: --markdown diff.md old/spec.yaml new/spec.yaml
+          args: --markdown diff.md --json diff.json old/spec.yaml new/spec.yaml
+      - run: cat diff.md
+      - run: cat diff.json
