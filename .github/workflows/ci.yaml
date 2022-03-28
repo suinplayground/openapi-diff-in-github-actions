@@ -23,24 +23,20 @@ jobs:
         continue-on-error: true
         uses: docker://openapitools/openapi-diff:latest
         with:
-          user: runner
           args: --fail-on-incompatible --markdown diff.md old/spec.yaml new/spec.yaml
-      - run: ls -la diff.md
-      - run: whoami
-      - if: steps.openapi-diff.outcome != 'success'
-        run: echo -e "<h2 align=center>🚨 API BREAKING CHANGES DETECTED 🚨</h2>\n\n$(cat diff.md)" > diff2.md
-      - run: cat diff2.md
-      - name: create string
-        run: |
-          MY_STRING=$(cat diff.md)
-          MY_STRING="${MY_STRING//'%'/'%25'}"
-          MY_STRING="${MY_STRING//$'\n'/'%0A'}"
-          MY_STRING="${MY_STRING//$'\r'/'%0D'}"
-          echo "::set-output name=content::$MY_STRING"
-        id: diff
+      - run: |
+          {
+            echo "## API Changelog"
+            echo ""
+            [ "${{ steps.openapi-diff.outcome }}" != "success" ] \
+              && echo ""<h2 align=center>🚨 API BREAKING CHANGES DETECTED 🚨</h2>"
+            echo ""
+            cat diff.md
+          } > comment.md
+      - run: cat comment.md
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           recreate: true
-          path: diff2.md
+          path: comment.md
 #          message: |
 #            ${{ steps.diff.outputs.content }}
