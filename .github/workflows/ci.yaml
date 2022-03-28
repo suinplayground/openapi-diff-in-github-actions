@@ -1,0 +1,24 @@
+name: 🎡 ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  detect-breaking-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out HEAD rev
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          path: head
+      - name: Check out BASE rev
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
+      - name: Run OpenAPI Diff (from HEAD rev)
+        uses: docker://openapitools/openapi-diff:latest
+        with:
+          args: --markdown /specs/diff.md head/schemas/spec.yaml base/schemas/spec.yaml
