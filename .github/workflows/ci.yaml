@@ -26,7 +26,7 @@ jobs:
           args: --fail-on-incompatible --markdown diff.md old/spec.yaml new/spec.yaml
       - run: ls -la diff.md
       - if: steps.openapi-diff.outcome != 'success'
-        run: echo "🚨 BREAKING CHANGES DETECTED\n\n$(cat diff.md)" > diff2.md
+        run: echo -e "<h2 align=center>🚨 API BREAKING CHANGES DETECTED 🚨</h2>\n\n$(cat diff.md)" > diff2.md
       - run: cat diff2.md
       - name: create string
         run: |
